@@ -3,34 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <title>Votación</title>
+
+<style>
+body{
+font-family:Arial;
+background:#0f1226;
+color:white;
+text-align:center;
+padding:40px;
+}
+
+.caja{
+max-width:500px;
+margin:auto;
+background:#1c1f3a;
+padding:20px;
+border-radius:15px;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+cursor:pointer;
+border:none;
+border-radius:10px;
+}
+
+#panel{ display:none; }
+
+.si{background:#ff4d4d;color:white;}
+.no{background:#43b581;color:white;}
+
+video{
+width:100%;
+margin-top:10px;
+border-radius:10px;
+}
+</style>
 </head>
 
-<body style="background:#0f1226;color:white;text-align:center;font-family:Arial;padding:50px;">
+<body>
 
-<h1>🗳️ Votación del servidor</h1>
+<div class="caja">
 
-<p>Escribe tu nombre:</p>
-<input id="nombre" placeholder="Nombre">
+<h1>🗳️ Sistema de Votación</h1>
+
+<input id="nombre" placeholder="Escribe tu nombre">
 
 <br><br>
 
-<button onclick="votarSi()">💀 Sí</button>
-<button onclick="votarNo()">🎉 No</button>
+<button onclick="entrar()">Entrar</button>
 
-<h2 id="msg"></h2>
+<div id="panel">
 
-<video id="video" controls style="width:80%;display:none;margin-top:20px;"></video>
+<h2>Hola <span id="user"></span></h2>
+
+<button class="si" onclick="votarSi()">💀 Sí</button>
+<button class="no" onclick="votarNo()">🎉 No</button>
+
+<h3 id="msg"></h3>
+
+<video id="video" controls style="display:none;"></video>
+
+</div>
+
+</div>
 
 <script>
 
+function entrar(){
+const nombre = document.getElementById("nombre").value;
+
+if(!nombre){
+alert("Escribe tu nombre primero");
+return;
+}
+
+document.getElementById("user").innerText = nombre;
+document.getElementById("panel").style.display = "block";
+}
+
 function votarSi(){
-document.getElementById("msg").innerText = "😢 Votaste SÍ";
+document.getElementById("msg").innerText="😢 Votaste SÍ";
 document.getElementById("video").style.display="block";
-document.getElementById("video").src="ssstik.io_@pibbledipple_1778120515212.mp4";
+document.getElementById("video").src="ssstik.io_@pibbledipple_1778120515212.mp3";
 }
 
 function votarNo(){
-document.getElementById("msg").innerText = "🎉 Votaste NO";
+document.getElementById("msg").innerText="🎉 Votaste NO";
 document.getElementById("video").style.display="block";
 document.getElementById("video").src="ssstik.io_1781154574487.mp4";
 }
