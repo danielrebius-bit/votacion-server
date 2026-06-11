@@ -2,68 +2,88 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Votación</title>
+<title>Votación PRO</title>
 
 <style>
 body{
+margin:0;
+font-family:Arial;
 background:#0f1226;
 color:white;
-font-family:Arial;
-text-align:center;
-padding:50px;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
 }
 
 .caja{
-max-width:500px;
-margin:auto;
 background:#1c1f3a;
 padding:20px;
 border-radius:15px;
+width:350px;
+text-align:center;
+}
+
+input,button{
+padding:10px;
+margin:5px;
+width:90%;
+border:none;
+border-radius:8px;
 }
 
 button{
-padding:10px 20px;
-margin:10px;
-border:none;
-border-radius:10px;
 cursor:pointer;
 }
-
-#panel{display:none;}
 
 .si{background:#ff4d4d;color:white;}
 .no{background:#43b581;color:white;}
 
+#panel{display:none;}
+
 video{
 width:100%;
-margin-top:20px;
+margin-top:10px;
 border-radius:10px;
 display:none;
 }
+
+.stats{
+margin-top:10px;
+font-size:14px;
+opacity:0.8;
+}
 </style>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+
 </head>
 
 <body>
 
 <div class="caja">
 
-<h1>🗳️ Votación del servidor</h1>
+<h2>🗳️ Sistema PRO</h2>
 
-<p>Escribe tu nombre:</p>
-<input id="nombre" placeholder="Nombre">
-
-<br><br>
+<input id="nombre" placeholder="Tu nombre">
 
 <button onclick="entrar()">Entrar</button>
 
 <div id="panel">
 
-<h2>Hola <span id="user"></span></h2>
+<h3>Hola <span id="user"></span></h3>
 
-<button class="si" onclick="votarSi()">💀 Sí</button>
-<button class="no" onclick="votarNo()">🎉 No</button>
+<button class="si" onclick="votar('si')">💀 Sí</button>
+<button class="no" onclick="votar('no')">🎉 No</button>
 
-<h2 id="msg"></h2>
+<div class="stats">
+✔ Sí: <span id="siCount">0</span> |
+❌ No: <span id="noCount">0</span>
+</div>
+
+<h3 id="msg"></h3>
 
 <video id="video" controls></video>
 
@@ -73,31 +93,59 @@ display:none;
 
 <script>
 
-function entrar(){
-let nombre = document.getElementById("nombre").value;
+// 🔥 TU CONFIG DE FIREBASE (PEGA EL TUYO AQUÍ)
+const firebaseConfig = {
+apiKey: "AIzaSyA2SgyB_hF3rSGIpVMiNdKk_P-1E6xxGyM",
+authDomain: "votacion-server.firebaseapp.com",
+databaseURL: "https://votacion-server-default-rtdb.firebaseio.com",
+projectId: "votacion-server",
+};
 
-if(!nombre){
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let user = "";
+let yaVoto = false;
+
+function entrar(){
+user = document.getElementById("nombre").value;
+
+if(!user){
 alert("Escribe tu nombre");
 return;
 }
 
-document.getElementById("user").innerText = nombre;
+document.getElementById("user").innerText = user;
 document.getElementById("panel").style.display="block";
 }
 
-function votarSi(){
-document.getElementById("msg").innerText="😢 Votaste SÍ";
-let video = document.getElementById("video");
-video.style.display="block";
-video.src="ssstik.io_@pibbledipple_1778120515212.mp4";
+function votar(tipo){
+
+if(yaVoto){
+alert("Ya votaste");
+return;
 }
 
-function votarNo(){
-document.getElementById("msg").innerText="🎉 Votaste NO";
+yaVoto = true;
+
+db.ref("votos/"+tipo).transaction(n => (n||0)+1);
+
+document.getElementById("msg").innerText = tipo=="si" ? "😢 Votaste SÍ" : "🎉 Votaste NO";
+
 let video = document.getElementById("video");
 video.style.display="block";
-video.src="ssstik.io_1781154574487.mp4";
+
+video.src = tipo=="si"
+? "si.mp4"
+: "no.mp4";
 }
+
+// 🔄 contador en vivo
+db.ref("votos").on("value", snap=>{
+let data = snap.val() || {};
+document.getElementById("siCount").innerText = data.si || 0;
+document.getElementById("noCount").innerText = data.no || 0;
+});
 
 </script>
 
