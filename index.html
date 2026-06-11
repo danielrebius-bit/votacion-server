@@ -6,11 +6,11 @@
 
 <style>
 body{
-font-family:Arial;
 background:#0f1226;
 color:white;
+font-family:Arial;
 text-align:center;
-padding:40px;
+padding:50px;
 }
 
 .caja{
@@ -24,20 +24,21 @@ border-radius:15px;
 button{
 padding:10px 20px;
 margin:10px;
-cursor:pointer;
 border:none;
 border-radius:10px;
+cursor:pointer;
 }
 
-#panel{ display:none; }
+#panel{display:none;}
 
 .si{background:#ff4d4d;color:white;}
 .no{background:#43b581;color:white;}
 
 video{
 width:100%;
-margin-top:10px;
+margin-top:20px;
 border-radius:10px;
+display:none;
 }
 </style>
 </head>
@@ -46,9 +47,10 @@ border-radius:10px;
 
 <div class="caja">
 
-<h1>🗳️ Sistema de Votación</h1>
+<h1>🗳️ Votación del servidor</h1>
 
-<input id="nombre" placeholder="Escribe tu nombre">
+<p>Escribe tu nombre:</p>
+<input id="nombre" placeholder="Nombre">
 
 <br><br>
 
@@ -61,9 +63,9 @@ border-radius:10px;
 <button class="si" onclick="votarSi()">💀 Sí</button>
 <button class="no" onclick="votarNo()">🎉 No</button>
 
-<h3 id="msg"></h3>
+<h2 id="msg"></h2>
 
-<video id="video" controls style="display:none;"></video>
+<video id="video" controls></video>
 
 </div>
 
@@ -72,27 +74,29 @@ border-radius:10px;
 <script>
 
 function entrar(){
-const nombre = document.getElementById("nombre").value;
+let nombre = document.getElementById("nombre").value;
 
 if(!nombre){
-alert("Escribe tu nombre primero");
+alert("Escribe tu nombre");
 return;
 }
 
 document.getElementById("user").innerText = nombre;
-document.getElementById("panel").style.display = "block";
+document.getElementById("panel").style.display="block";
 }
 
 function votarSi(){
 document.getElementById("msg").innerText="😢 Votaste SÍ";
-document.getElementById("video").style.display="block";
-document.getElementById("video").src="ssstik.io_@pibbledipple_1778120515212.mp3";
+let video = document.getElementById("video");
+video.style.display="block";
+video.src="ssstik.io_@pibbledipple_1778120515212.mp4";
 }
 
 function votarNo(){
 document.getElementById("msg").innerText="🎉 Votaste NO";
-document.getElementById("video").style.display="block";
-document.getElementById("video").src="ssstik.io_1781154574487.mp4";
+let video = document.getElementById("video");
+video.style.display="block";
+video.src="ssstik.io_1781154574487.mp4";
 }
 
 </script>
